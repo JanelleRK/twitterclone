@@ -1,8 +1,6 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout, authenticate
 from twitteruser.models import TwitterUser
-from twitteruser.forms import TwitterUserForm
 from tweet.models import Tweet
 
 # Create your views here.
@@ -12,30 +10,6 @@ def index(request):
     tweets = Tweet.objects.all().order_by('-date')
     return render(request, 'index.html', {{'twitter_user_profile': twitter_user_profile, 'tweets': tweets}})
 
-
-
-def signup_view(request):
-    if request.method == "POST":
-        form = TwitterUserForm(request.POST)
-
-        if form.is_valid():
-            data = form.cleaned_data
-            new_user = TwitterUser.objects.create_user(
-                username=data['username'],
-                password=data['password']
-            )
-            new_user.set_password(raw_password=data['password'])
-        new_user.save()
-        user=authenticate(request, username=['username'], password=['password'])
-        if user:
-            login(request, user)
-        return HttpResponseRedirect(reverse, 'profile')
-
-    else:
-
-        form = TwitterUserForm()
-
-        return render(request, 'genericform.html', {'form': form})
 
 @login_required
 def follow_view(request, id):
