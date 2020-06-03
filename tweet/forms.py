@@ -1,7 +1,11 @@
 from django import forms
+from tweet.models import Tweet
 
-class AddTweetForm(forms.Forms):
-    tweet = forms.CharField(max_length=140)
+
+class AddTweetForm(forms.ModelForm):
+    class Meta:
+        model=Tweet
+        fields=['tweet']
 
 
 
