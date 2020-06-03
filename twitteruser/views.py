@@ -16,7 +16,7 @@ def follow_view(request, id):
     #https: // stackoverflow.com / questions / 6218175 / how - to - implement - followers - following - in -django
     #https: // stackoverflow.com / questions / 10602071 / following - users - like - twitter - in -django - how - would - you - do - it
     user_1 = request.user
-    follow_user = TwitterUser.object.get(id=id)
+    follow_user = TwitterUser.objects.get(id=id)
     user_1.following.add(follow_user)
     user_1.save()
     return HttpResponseRedirect(reverse('profile', kwargs={'id':id}))
@@ -25,7 +25,7 @@ def follow_view(request, id):
 @login_required
 def unfollow_view(request, id):
     user_1 = request.user
-    follow_user = TwitterUser.object.get(id=id)
+    follow_user = TwitterUser.objects.get(id=id)
     user_1.following.remove(follow_user)
     user_1.save()
     return HttpResponseRedirect(reverse('profile', kwargs={'id': id}))

@@ -14,6 +14,7 @@ def signup_view(request):
             data = form.cleaned_data
             new_user = TwitterUser.objects.create_user(
                 username=data['username'],
+                display_name=data['display_name'],
                 password=data['password']
             )
         new_user.save()
