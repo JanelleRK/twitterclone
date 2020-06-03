@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from twitteruserapp.models import CustomUser
-from twitteruserapp.forms import CustomUserForm
+from twitteruser.models import CustomUser
+from twitteruser.forms import CustomUserForm, LoginForm
 
 # Create your views here.
 def index(request):
@@ -32,3 +32,30 @@ def signup_view(request):
 
         return render(request, 'genericform.html', {'form': form})
 
+
+def login_view(request):
+    html="loginform.html"
+
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            data = form.cleaned_data
+            user = authenticate(
+                username=data['username'],
+                password=data['password']
+            )
+        if user:
+            login(request, user)
+            return HttpResponseRedirect(
+                request.GET.get('next', reverse('homepage'))
+            )
+
+        form = LoginForm()
+
+        return render(request, html, {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse, 'homepage')
