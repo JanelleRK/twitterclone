@@ -37,11 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tweet.apps.TweetAppConfig',
-    'notification.apps.NotificationAppConfig',
-    'authentication.apps.AuthenticationAppConfig',
-    'twitteruser.apps.TwitterUserAppConfig'
-
+    'tweet.apps.TweetConfig',
+    'notification.apps.NotificationConfig',
+    'authentication.apps.AuthenticationConfig',
+    'twitteruser.apps.TwitterUserConfig'
 ]
 
 MIDDLEWARE = [
@@ -124,4 +123,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'twitteruser.CustomUser'
+AUTH_USER_MODEL = 'twitteruser.TwitterUser'

@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class TwitterUserAppConfig(AppConfig):
+class TwitterUserConfig(AppConfig):
     name = 'twitteruser'
