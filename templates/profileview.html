@@ -1,7 +1,33 @@
-<h1>Profile:  {{twitteruser}}</h1>
+<h1>Profile of:</h1>
 
-<h2>{{twitteruser}} Tweets:</h2>
-<h2>Following:  {{following_count}}</h2>
-<h2>Number of Tweets:  {{all_tweets_count}}</h2>
-<h2>Notifications:  {{notification}}</h2>
+h2>@{{twitter_user_profile.username}}</h2>
 
+<h4>Tweets: {{tweets|length}}</h4>
+
+<h4>Following: {{twitter_user_profile.following.all|length}}</h4>
+
+<h4><a href="{% url 'homepage' %}">Home Page</a></h4>
+
+{% if request.user.is_active %}
+
+{% if request.user != user %}
+
+{% if user not in request.user.following.all %}
+
+<a href="{% url 'follow' user.id%}">Follow User</a>
+
+{% else %}
+
+<a href="{% url 'unfollow' user.id%}">Unfollow User</a>
+
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+{% for data in tweet %}
+    <h5><a href="{% url 'profile' tweet.tweet_author.username%}">{{tweet.tweet_author}}</a></h5>
+    <h5><a href="{% url 'tweet' data.id %}">{{tweet.date}}</a></h5>
+    <p>{{tweet.tweet}}</p>
+    <br>
+{% endfor %}

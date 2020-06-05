@@ -1,0 +1,9 @@
+<h2>Tweet Details</h2>
+<h4><a href="{% url 'homepage' %}">Home Page</a></h4>
+<hr>
+ {% for tweet in tweets %}
+</h3><a href="{% url 'profile' tweet.tweet_author%}">{{tweet.tweet_author}}</a></h3>
+<h5>{{tweet.date}}</h5>
+<br>
+<body>{{tweet.tweet}}</body>
+{% endfor %}

@@ -1,14 +1,13 @@
 from django import forms
 
-from twitteruser.models import TwitterUser
-from django.contrib.auth.forms import UserCreationForm
+
+class SignUpForm(forms.Form):
+    username = forms.CharField(max_length=40)
+    password = forms.CharField(widget=forms.PasswordInput)
+    display_name = forms.CharField(max_length=50)
 
 
 
-class SignUpForm(UserCreationForm):
-    class Meta:
-        model = TwitterUser
-        fields = ['username', 'display_name', 'password']
 
 
 class LoginForm(forms.Form):

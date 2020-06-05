@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required
-def NewNotifications(request):
+def new_notifications(request):
     html = "notifications.html"
     user_notified = request.user
     new_notifications = Notification.objects.filter(user_notification=user_notified, new_notification=False)

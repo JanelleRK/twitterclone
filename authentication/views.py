@@ -18,14 +18,11 @@ def signup_view(request):
                 password=data['password']
             )
         new_user.save()
-        user=authenticate(request, username=['username'], password=['password'])
-        if user:
-            login(request, new_user)
-        return HttpResponseRedirect(reverse, 'profile')
+        return HttpResponseRedirect(reverse, 'homepage')
 
     form = SignUpForm()
 
-    return render(request, 'genericform.html', {'form': form})
+    return render(request, 'signupview.html', {'form': form})
 
 
 
@@ -44,12 +41,12 @@ def login_view(request):
         if user:
             login(request, user)
             return HttpResponseRedirect(
-                request.GET.get('next', reverse('profile'))
+                request.GET.get('next', reverse('homepage'))
             )
 
-        form = LoginForm()
+    form = LoginForm()
 
-        return render(request, html, {'form': form})
+    return render(request, html, {'form': form})
 
 
 @login_required

@@ -1,21 +1,15 @@
 <h1>Twitter Clone</h1>
+<h2>{{ twitter_user_profile.username }}</h2>
 <br>
-{% if user.is_authenticated %}
-    <h2>Hello <a href="profile/{{twitter_user_profile.id}}"></a>
-    {{ user }}!
-    </h2>
+<h4><a href="{% url 'addtweet' %}">Create a Tweet!</a></h4>
+<h4><a href="{% url 'profile' twitter_user_profile.username %}">Profile</a></h4>
+<h4><a href="{% url 'notifications' %}">Notifications : {{new_notifications}}</a></h4>
+<h4><a href="{% url 'logout' %}"> Logout </a></h4>
 
-
-<a href = "addtweet/"><button> Add Tweet</button></a>
-<br>
-<a href="notifications/"><button>Notifications</button></a>
-<br>
-<a href="logout/"><button>Logout</button></a>
-
-
-  {% for data in tweet%}
-    <h3><a href="profile/{{data.tweet_author.id}}">{{data.tweet_author}}</a> on <a href="'tweet/{{data.id}}"> {{data.date}}</a><br><br></p></h3><p>{{data.tweet}}</p>
-  {%endfor%}
-
-
-{% endif %}
+{% for tweet in tweets %}
+    <hr>
+    <h5><a href="{% url 'profile' tweets.tweet_author.username%}">{{tweets.tweet_author}}</a></h5>
+    <h5><a href="{% url 'tweet' tweets.id %}">{{tweets.date}}</a></h5>
+    <p>{{tweets.tweet}}</p>
+    <br>
+{% endfor %}

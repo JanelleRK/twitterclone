@@ -1,0 +1,15 @@
+<h2>Notifications</h2>
+<a href="{% url 'homepage' %}">Home Page</a>
+{% for notification in new_notifications %}
+    {% if notification.read == False %}
+        <h4>
+            <a href="{% url 'profile' notification.tweet.tweet_author.username %}">
+            {{notification.tweet.tweet_author.username}}
+            </a>
+            mentioned you in a tweet!
+        </h4>
+        <h5><a href="{% url 'tweet' notification.tweet.id %}">{{notification.tweet.date}}</a></h5>
+        <h5>{{notification.tweet.tweet}}</h5>
+        <hr>
+    {% endif %}
+{% endfor %}
