@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
+from notification import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('notifications/', views.Notification, name='notification')
 ]
