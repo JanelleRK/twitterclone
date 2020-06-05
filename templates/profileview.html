@@ -25,9 +25,9 @@ h2>@{{twitter_user_profile.username}}</h2>
 {% endif %}
 
 
-{% for data in tweet %}
+{% for tweet in tweets %}
     <h5><a href="{% url 'profile' tweet.tweet_author.username%}">{{tweet.tweet_author}}</a></h5>
-    <h5><a href="{% url 'tweet' data.id %}">{{tweet.date}}</a></h5>
+    <h5><a href="{% url 'tweet' tweet.id %}">{{tweet.date}}</a></h5>
     <p>{{tweet.tweet}}</p>
     <br>
 {% endfor %}

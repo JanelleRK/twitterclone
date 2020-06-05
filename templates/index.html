@@ -3,13 +3,13 @@
 <br>
 <h4><a href="{% url 'addtweet' %}">Create a Tweet!</a></h4>
 <h4><a href="{% url 'profile' twitter_user_profile.username %}">Profile</a></h4>
-<h4><a href="{% url 'notifications' %}">Notifications : {{new_notifications}}</a></h4>
+<h4><a href="{% url 'notifications' %}">Notifications : {{notification_count|length}}</a></h4>
 <h4><a href="{% url 'logout' %}"> Logout </a></h4>
 
 {% for tweet in tweets %}
     <hr>
-    <h5><a href="{% url 'profile' tweets.tweet_author.username%}">{{tweets.tweet_author}}</a></h5>
-    <h5><a href="{% url 'tweet' tweets.id %}">{{tweets.date}}</a></h5>
-    <p>{{tweets.tweet}}</p>
+    <h5><a href="{% url 'profile' tweet.tweet_author.username%}">{{tweet.tweet_author}}</a></h5>
+    <h5><a href="{% url 'tweet' tweet.id %}">{{tweet.date}}</a></h5>
+    <p>{{tweet.tweet}}</p>
     <br>
 {% endfor %}
