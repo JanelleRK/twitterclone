@@ -6,45 +6,59 @@ from notification.models import Notification
 
 # Create your views here.
 @login_required
-#can't quite figure this out for displaying notifications
 def index(request):
-    twitter_user_profile = request.user
-    tweets = Tweet.objects.all().order_by('-date')
-    new_notifications = Notification.objects.filter(id=request.user.id)
-    notifications_count = []
-    for new_notification in new_notifications:
-        if new_notification.read is False:
-            notifications_count.append(new_notification)
-
-    return render(request, 'index.html', {{'twitter_user_profile': twitter_user_profile, 'tweets': tweets, 'new_notifications':new_notifications}})
+    html='index.html'
+    following=request.user.following.all()
+    tweets = Tweet.objects.filter(author__in=following).order_by('-date')
+    notifications = Notification.objects.filter(user_notified=request.user)
+    return render(request, html, {'tweets':tweets, 'notifications':notifications, 'following':following})
 
 
-@login_required
 def follow_view(request, id):
     #https: // stackoverflow.com / questions / 6218175 / how - to - implement - followers - following - in -django
     #https: // stackoverflow.com / questions / 10602071 / following - users - like - twitter - in -django - how - would - you - do - it
-
+    user = request.user
     follow_user = TwitterUser.objects.get(id=id)
-    username = follow_user.username
-    request_user = request.user
-    request_user.following.add(follow_user)
-    follow_user.save()
-    return HttpResponseRedirect(reverse('profile', args=(username,)))
+    user.following.add(follow_user)
+    user.save()
+    return HttpResponseRedirect(reverse('profile', args=(id,)))
 
 
-@login_required
 def unfollow_view(request, id):
+    user = request.user
     unfollow_user = TwitterUser.objects.get(id=id)
-    username = unfollow_user.username
-    request_user = request.user
-    request_user.following.add(unfollow_user)
-    unfollow_user.save()
-    return HttpResponseRedirect(reverse('profile', args=(username,)))
+    user.following.remove(unfollow_user)
+    user.save()
+    return HttpResponseRedirect(reverse('profile', args=(id,)))
 
 
 def profile_view(request, id):
-    html = 'profileview.html'
-    twitter_user_profile = TwitterUser.objects.get(username=username)
-    tweets = Tweet.objects.filter(tweet_author=twitter_user_profile.id)
-    tweets = tweets.order_by('-date')
-    return render(request, html, {'twitter_user_profile': twitter_user_profile, 'tweets': tweets})
+    tweets = Tweet.objects.filter(author=id)
+    tweet_count = tweets.count()
+    user = TwitterUser.objects.get(id=id)
+    follow = user.following.all()
+    follow_count = follow.count()
+    if request.user.is_authenticated:
+        followers = request.user.follow.all()
+        if user in followers:
+            is_following = True
+        else:
+            is_following = False
+        return render(
+            request,
+            'profileview.html', {
+                'tweets': tweets,
+                'tweet_counts': tweet_count,
+                'user': user,
+                'follow_count': follow_count,
+                'followers': followers,
+                'is_following': is_following,
+            })
+    return render(
+        request,
+        'profileview.html', {
+            'tweets': tweets,
+            'tweet_count': tweet_count,
+            'user': user,
+            'follow_count': follow_count,
+        })

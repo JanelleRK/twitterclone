@@ -3,30 +3,32 @@ from django.contrib.auth.decorators import login_required
 from twitteruser.models import TwitterUser
 from tweet.forms import AddTweetForm
 from tweet.models import Tweet
+from notification.models import Notification
 
 # Create your views here.
-@login_required
-def add_tweet(request,id):
-    html = 'addtweet.html'
-    tweets = Tweet.objects.all().order_by('-date')
-
+def add_tweet(request, id):
     if request.method == "POST":
         form = AddTweetForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             user = TwitterUser.objects.get(id=id)
-            Tweet.objects.create(
+            users = TwitterUser.objects.all()
+            tweet = Tweet.objects.create(
                 tweet=data['tweet'],
-                tweet_author = user
+                author=user
             )
-            return HttpResponseRedirect(reverse('homepage'))
-#still need to add notifications?
-    form = AddTweetForm()
+            notification = re.findall(r'@(\w+)', data['tweet'])
 
-    return render(request, html, {"form": form, 'tweets': tweets})
+            for user in notification:
+                Notification.objects.create(
+                    user_notified=TwitterUser.objects.get(username=user),
+                    tweet=tweet,
+                )
+            return HttpResponseRedirect(reverse('homepage'))
+    form = AddTweetForm()
+    return render(request, 'addtweet.html', {'form': form})
 
 
 def tweet_view(request, id):
-    html='tweetview.html'
     tweet = Tweet.objects.get(id=id)
-    return render(request, html, {'tweet':tweet})
+    return render(request, 'tweetview.html', {'tweet': tweet})

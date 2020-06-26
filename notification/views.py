@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from notification.models import Notification
+from twitteruser.models import TwitterUser
 from django.contrib.auth.decorators import login_required
 
 
@@ -9,8 +10,8 @@ from django.contrib.auth.decorators import login_required
 def new_notifications(request):
     html = "notifications.html"
     user_notified = request.user
-    new_notifications = Notification.objects.filter(user_notification=user_notified, new_notification=False)
-    for notification in new_notifications:
-        notification.new_notification = True
+    notifications = Notification.objects.filter(user_notified=user_notified, new_notifications=False)
+    for notification in notifications:
+        notification.new_notifications = True
         notification.save()
-    return render(request, html, {{'new_notifications':new_notifications, 'user_notified':user_notified}})
+    return render(request, html, {'notifications':notifications, 'user_notified':user_notified })
