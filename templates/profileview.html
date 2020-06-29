@@ -1,33 +1,21 @@
-<h1>Profile of:</h1>
-
-h2>@{{twitter_user_profile.username}}</h2>
-
-<h4>Tweets: {{tweets|length}}</h4>
-
-<h4>Following: {{twitter_user_profile.following.all|length}}</h4>
-
-<h4><a href="{% url 'homepage' %}">Home Page</a></h4>
-
-{% if request.user.is_active %}
-
-{% if request.user != user %}
-
-{% if user not in request.user.following.all %}
-
-<a href="{% url 'follow' user.id%}">Follow User</a>
-
-{% else %}
-
-<a href="{% url 'unfollow' user.id%}">Unfollow User</a>
-
-{% endif %}
-{% endif %}
+<h1>Profile</h1>
+<h2>{{user.username}}</h2>
+{% if user.id != request.user.id %}
+    {% if not is_following %}
+        <a class="follow-link" href="/follow/{{user.id}}"><button>Follow</button></a>
+    {% else %}
+        <a class="follow-link" href="/unfollow/{{user.id}}"><button>Unfollow</button></a>
+    {% endif %}
 {% endif %}
 
+<a href="/"><button>Go back Home</button></a>
 
+<div>
+    <span>Tweet Count: {{tweets|length}}</span>
+    <span>Following Count: {{user.following.count}}</span>
+</div>
 {% for tweet in tweets %}
-    <h5><a href="{% url 'profile' tweet.tweet_author.username%}">{{tweet.tweet_author}}</a></h5>
-    <h5><a href="{% url 'tweet' tweet.id %}">{{tweet.date}}</a></h5>
-    <p>{{tweet.tweet}}</p>
-    <br>
+    <li>
+    {{tweet.tweet}}
+    </li>
 {% endfor %}

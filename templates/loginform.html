@@ -1,10 +1,9 @@
-<h2>Login to your Twitter Clone Account</h2>
 
-<form action='' method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login here...">
-</form>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Login here...">
+    </form>
+    <p>Don't have an account?<a href="{% url 'signup'%}"> Signup here...</a></p>
 
 
-<h4>Don't have an account?  <a href="{% url 'signup' %}">You can create one here...</a></h4>

@@ -5,9 +5,9 @@ from twitteruser.models import TwitterUser
 
 # Create your models here.
 class Notification(models.Model):
-    user_notified = models.ForeignKey(TwitterUser, on_delete=models.CASCADE)
+    receiver = models.ForeignKey(TwitterUser, on_delete=models.CASCADE)
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
-    new_notifications = models.BooleanField(default=False)
+    received = models.BooleanField(default=False)
 
 
 

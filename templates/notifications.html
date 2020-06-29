@@ -1,12 +1,5 @@
-<h2>Notifications</h2>
-<a href="{% url 'homepage'%}"><button>Home</button></a>
-  <a href = "{% url 'addtweet' id=user.id%}"><button> Add Tweet</button></a> <a href="{% url 'notifications'%}"><button>Notifications</button></a>
-   <a href="{% url 'logout' %}"><button>Logout</button></a>
-</div>
-
-{% for notif in notifications%}
-<div class= 'tweet-container'>
-    <p class = 'tweet'><b>{{user_notified}} tagged you:</b></p><p>{{notification.tweet}}</p>
-
-</div>
+{% csrf_token %}
+<h1>Notifications</h1>
+{% for notification in notifications %}
+ <li>{{notification.tweet.tweet}} || {{notification.tweet.author}}</li>
 {% endfor %}

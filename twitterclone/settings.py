@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'tweet.apps.TweetConfig',
     'notification.apps.NotificationConfig',
     'authentication.apps.AuthenticationConfig',
-    'twitteruser.apps.TwitterUserConfig'
+    'twitteruser.apps.TwitterUserConfig',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +124,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'twitteruser.TwitterUser'
+
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/homepage/'
+LOGOUT_REDIRECT_URL = '/homepage/'

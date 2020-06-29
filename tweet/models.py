@@ -8,5 +8,3 @@ class Tweet(models.Model):
     date = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(TwitterUser, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.tweet
