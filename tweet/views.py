@@ -4,6 +4,7 @@ from tweet.models import Tweet
 from twitteruser.models import TwitterUser
 import re
 from notification.models import Notification
+from django.views.generic import View
 
 
 # Create your views here.
@@ -17,9 +18,12 @@ def notification_alert(tweet):
             tweet=tweet
         )
 
+class AltAddTweet(View):
+    def get(self, request):
+        form = AddTweetForm()
+        return render(request, 'addtweet.html', {'form': form})
 
-def add_tweet(request):
-    if request.method == 'POST':
+    def post(self, request):
         form = AddTweetForm(request.POST)
         if form.is_valid():
             tweet = form.save(commit=False)
@@ -27,10 +31,26 @@ def add_tweet(request):
             tweet.save()
             notification_alert(tweet)
         return HttpResponseRedirect(reverse('homepage'))
-    return render(request, 'addtweet.html', {'form': AddTweetForm()})
+
+
+#def add_tweet(request):
+    #if request.method == 'POST':
+        #form = AddTweetForm(request.POST)
+        #if form.is_valid():
+            #tweet = form.save(commit=False)
+            #tweet.author = TwitterUser.objects.get(id=request.user.id)
+            #tweet.save()
+            #notification_alert(tweet)
+        #return HttpResponseRedirect(reverse('homepage'))
+    #return render(request, 'addtweet.html', {'form': AddTweetForm()})
 
 
 
-def tweet_detail(request, id):
+'''def tweet_detail(request, id):
     tweet = Tweet.objects.get(id=id)
-    return render(request, 'tweetview.html', {'tweet': tweet})
+    return render(request, 'tweetview.html', {'tweet': tweet})'''
+
+class AltTweetDetail(View):
+    def get(self, request, id):
+        tweet = Tweet.objects.get(id=id)
+        return render(request, 'tweetview.html', {'tweet': tweet})

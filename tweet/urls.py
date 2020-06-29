@@ -16,10 +16,12 @@ Including another URLconf
 
 from django.urls import path
 
-from tweet.views import tweet_detail, add_tweet
+from tweet.views import AltAddTweet, AltTweetDetail
 
 
 urlpatterns = [
-    path('tweet_detail/<int:id>/', tweet_detail, name='tweet_detail'),
-    path('add_tweet/', add_tweet, name='add_tweet'),
+    #path('tweet_detail/<int:id>/', tweet_detail, name='tweet_detail'),
+    path('tweet_detail/<int:id>/', AltTweetDetail.as_view(), name='tweet_detail'),
+    path('add_tweet/', AltAddTweet.as_view(), name='add_tweet'),
+    #path('add_tweet/', add_tweet, name='add_tweet'),
 ]

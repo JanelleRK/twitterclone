@@ -16,11 +16,12 @@ Including another URLconf
 
 from django.urls import path
 
-from twitteruser.views import profile_view, follow, unfollow
+from twitteruser.views import AltProfileView, follow, unfollow
 
 
 urlpatterns = [
-    path('profile/<int:id>/', profile_view, name='profile'),
+    #path('profile/<int:id>/', profile_view, name='profile'),
+    path('profile/<int:id>/', AltProfileView.as_view(), name='profile'),
     path('follow/<int:id>/', follow, name='follow'),
     path('unfollow/<int:id>/', unfollow, name='unfollow'),
 ]

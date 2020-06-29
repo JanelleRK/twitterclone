@@ -4,14 +4,23 @@ from authentication.forms import LoginForm, SignUpForm
 from twitteruser.models import TwitterUser
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
 
 
 
 # Create your views here.
-@login_required
-def index(request):
+#@login_required
+'''def index(request):
     tweets = Tweet.objects.all().order_by('-date')
-    return render(request, 'index.html', {'tweets': tweets})
+    return render(request, 'index.html', {'tweets': tweets})'''
+
+
+class AltIndex(LoginRequiredMixin, View):
+    def get(self,request):
+        tweets = Tweet.objects.all().order_by('-date')
+        return render(request, 'index.html', {'tweets': tweets})
+
 
 
 def signup(request):

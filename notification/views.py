@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic import View
 from .models import Notification
 from twitteruser.models import TwitterUser
 
@@ -9,3 +10,5 @@ def notification(request):
     users = TwitterUser.objects.all()
 
     return render(request, 'notifications.html', {'notifications': notifications, 'users': users})
+
+
