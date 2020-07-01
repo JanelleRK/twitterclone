@@ -21,15 +21,14 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            new_user = TwitterUser.objects.create_user(
+            user = TwitterUser.objects.create_user(
                 username=data['username'],
                 displayname=data['displayname'],
                 password=data['password'],
 
             )
-            new_user.save()
-            login(request, new_user)
-            return HttpResponseRedirect(reverse('home'))
+            login(request, user)
+            return HttpResponseRedirect(reverse('homepage'))
     form = SignUpForm()
     return render(request, html, {'form': form})
 

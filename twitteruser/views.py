@@ -6,15 +6,35 @@ from tweet.models import Tweet
 # Create your views here.
 
 def profile_view(request, id):
+    tweets = Tweet.objects.filter(author=id)
+    count_tweets = tweets.count()
     user = TwitterUser.objects.get(id=id)
-    tweets = Tweet.objects.filter(author=user)
-    logged_in_user = TwitterUser.objects.get(id=request.user.id)
-    is_following = logged_in_user.following.filter(id=id).exists()
-    return render(request, 'profileview.html', {
-        'user': user,
-        'tweets': tweets,
-        'is_following': is_following
-    })
+    followers = user.followers.all()
+    follower_count = followers.count()
+    if request.user.is_authenticated:
+        my_followers = request.user.followers.all()
+        if user in my_followers:
+            is_following = True
+        else:
+            is_following = False
+        return render(
+            request,
+            'profileview.html', {
+                'tweets': tweets,
+                'count_tweets': count_tweets,
+                'user': user,
+                'follower_count': follower_count,
+                'my_followers': my_followers,
+                'is_following': is_following,
+            })
+    return render(
+        request,
+        'profileview.html', {
+            'tweets': tweets,
+            'count_tweets': count_tweets,
+            'user': user,
+            'follower_count': follower_count,
+        })
 
 
 def follow(request, id):
